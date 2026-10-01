@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mimikara N3 - Từ 101 đến 150</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            background: linear-gradient(rgba(255, 245, 247, 0.7), rgba(240, 220, 225, 0.8)),
+                        url('https://images.unsplash.com/photo-1522383225653-ed111181a951?q=80&w=1200&auto=format&fit=crop') center/cover no-repeat fixed;
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 12px;
+            overflow-x: hidden;
+        }
+
+        .sakura-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+        .petal {
+            position: absolute;
+            background: #ffb7c5;
+            border-radius: 15px 0 15px 0;
+            opacity: 0.75;
+            filter: drop-shadow(0 2px 4px rgba(216, 90, 127, 0.2));
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            0% { transform: translate(0, -10px) rotate(0deg); opacity: 0.8; }
+            100% { transform: translate(80px, 105vh) rotate(360deg); opacity: 0; }
+        }
+
+        .app-card {
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            width: 100%;
+            max-width: 500px;
+            border-radius: 20px;
+            padding: 20px 16px;
+            border: 1.5px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 30px rgba(180, 100, 120, 0.15);
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-menu {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            border-bottom: 2px solid #f2d5db;
+            padding-bottom: 8px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px 8px;
+            border: none;
+            background: #fff0f3;
+            color: #d85a7f;
+            font-weight: 700;
+            font-size: 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active { background: #d85a7f; color: white; }
+
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 13px; 
+            font-weight: 700; 
+            color: #b06d7e; 
+            margin-bottom: 12px; 
+        }
+
+        .vocab-card {
+            background: #fff5f7;
+            border-left: 4px solid #d85a7f;
+            padding: 14px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+
+        .vocab-num { font-size: 12px; font-weight: 700; color: #d85a7f; margin-bottom: 2px; }
+        .vocab-word { font-size: 26px; font-weight: 700; color: #3a2e30; }
+        .vocab-reading { font-size: 15px; color: #b06d7e; margin-top: 2px; }
+        .vocab-meaning { font-size: 16px; color: #4a383b; font-weight: 700; }
+
+        .options-grid { display: flex; flex-direction: column; gap: 10px; }
+        .opt-btn {
+            display: flex;
+            align-items: center;
+            background: #ffffff;
+            border: 1.5px solid #f2d5db;
+            color: #4a383b;
+            padding: 14px 14px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: left;
+            line-height: 1.3;
+        }
+        .opt-btn:active { background: #fff0f3; border-color: #d85a7f; }
+        .opt-btn.correct { background: #e8f5e9 !important; border-color: #66bb6a !important; color: #2e7d32 !important; }
+        .opt-btn.wrong { background: #ffebee !important; border-color: #ef5350 !important; color: #c62828 !important; }
+
+        .typing-box { display: flex; flex-direction: column; gap: 10px; }
+        .typing-input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #f2d5db;
+            border-radius: 12px;
+            font-size: 16px;
+            outline: none;
+            background: #fff;
+        }
+        .typing-input:focus { border-color: #d85a7f; }
+
+        .example-box {
+            background: #ffffff;
+            border: 1px dashed #d85a7f;
+            border-radius: 12px;
+            padding: 12px;
+            margin-top: 10px;
+        }
+        .example-title { font-size: 11px; font-weight: 700; color: #d85a7f; text-transform: uppercase; margin-bottom: 4px; }
+        .example-jp { font-size: 15px; color: #3a2e30; font-weight: 600; margin-bottom: 4px; }
+        .example-vi { font-size: 13px; color: #666; line-height: 1.4; }
+
+        .feedback { display: none; margin-top: 14px; }
+        .next-btn {
+            display: block;
+            width: 100%;
+            margin-top: 12px;
+            background: linear-gradient(135deg, #e07a9e 0%, #d85a7f 100%);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+        }
+        .next-btn:active { opacity: 0.9; }
+    </style>
+</head>
+<body>
+
+    <div class="sakura-container" id="sakura-box"></div>
+
+    <div class="app-card">
+        <div class="tab-menu">
+            <button class="tab-btn active" onclick="switchMode('quiz')">📝 Trắc nghiệm</button>
+            <button class="tab-btn" onclick="switchMode('typing')">⌨️ Luyện gõ từ</button>
+        </div>
+
+        <div class="header">
+            <span id="q-count">Từ 101 / 150</span>
+            <span id="score-count">Điểm: 0</span>
+        </div>
+
+        <!-- Chế độ Trắc nghiệm -->
+        <div id="quiz-section">
+            <div class="vocab-card">
+                <div class="vocab-num" id="q-num">No. 101</div>
+                <div class="vocab-word" id="q-word">判</div>
+                <div class="vocab-reading" id="q-reading">はん</div>
+            </div>
+
+            <div class="options-grid" id="quiz-box"></div>
+        </div>
+
+        <!-- Chế độ Luyện gõ -->
+        <div id="typing-section" style="display: none;">
+            <div class="vocab-card">
+                <div class="vocab-num" id="t-num">No. 101</div>
+                <div class="vocab-meaning" id="t-meaning">Con dấu, dấu con dấu</div>
+            </div>
+
+            <div class="typing-box">
+                <input type="text" class="typing-input" id="typing-input" placeholder="Gõ Kanji, Kana hoặc Romaji..." autocomplete="off" autocapitalize="off">
+                <button class="next-btn" style="margin-top:0;" onclick="checkTyping()">Kiểm tra</button>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">🌸 Ví dụ trong sách Mimikara:</div>
+                <div class="example-jp" id="t-ex-jp">書類に「判」を押す。</div>
+                <div class="example-vi" id="t-ex-vi">Đóng con dấu vào tài liệu giấy tờ.</div>
+            </div>
+        </div>
+
+        <div class="feedback" id="feedback">
+            <div id="result-status" style="font-weight: 700; text-align: center; font-size: 15px;"></div>
+            <button class="next-btn" onclick="nextWord()">Từ tiếp theo ➔</button>
+        </div>
+    </div>
+
+    <script>
+        function createPetal() {
+            const box = document.getElementById('sakura-box');
+            if(!box) return;
+            const p = document.createElement('div');
+            p.classList.add('petal');
+            p.style.width = Math.random() * 6 + 6 + 'px';
+            p.style.height = Math.random() * 8 + 8 + 'px';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.animationDuration = Math.random() * 3 + 5 + 's';
+            box.appendChild(p);
+            setTimeout(() => p.remove(), 8000);
+        }
+        setInterval(createPetal, 500);
+
+        // 50 từ vựng Mimikara N3 tiếp theo (Từ 101 đến 150)
+        const vocabData = [
+            { id: 101, word: "判", reading: "はん", romaji: "han", meaning: "Con dấu, con triện", exJp: "書類に「判」を押す。", exVi: "Đóng con dấu vào tài liệu giấy tờ." },
+            { id: 102, word: "名刺", reading: "めいし", romaji: "meishi", meaning: "Danh thiếp, danh thiếp công việc", exJp: "名刺を交換する。", exVi: "Trao đổi danh thiếp." },
+            { id: 103, word: "免許", reading: "めんきょ", romaji: "menkyo", meaning: "Giấy phép, bằng cấp", exJp: "レストランを開くには、調理師の「免許」が必要だ。", exVi: "Để mở nhà hàng thì cần có bằng đầu bếp." },
+            { id: 104, word: "多く", reading: "おおく", romaji: "ooku", meaning: "Nhiều, phần lớn", exJp: "オリンピックには「多く」の国が参加した。", exVi: "Nhiều quốc gia đã tham gia Thế vận hội." },
+            { id: 105, word: "前半", reading: "ぜんはん", romaji: "zenhan", meaning: "Nửa đầu, hiệp một", exJp: "映画の「前半」はたいくつだったが、後半はおもしろかった。", exVi: "Nửa đầu bộ phim thì nhạt nhẽo nhưng nửa sau lại hay." },
+            { id: 106, word: "後半", reading: "こうはん", romaji: "kouhan", meaning: "Nửa sau, hiệp hai", exJp: "後半はおもしろかった。", exVi: "Nửa sau bộ phim thì rất thú vị." },
+            { id: 107, word: "最高", reading: "さいこう", romaji: "saikou", meaning: "Cao nhất, tuyệt vời nhất", exJp: "最高気温。", exVi: "Nhiệt độ cao nhất." },
+            { id: 108, word: "最低", reading: "さいてい", romaji: "saitei", meaning: "Thấp nhất, tồi tệ nhất", exJp: "クラスで「最低」の点をとってしまった。", exVi: "Tôi lỡ nhận điểm thấp nhất lớp." },
+            { id: 109, word: "最初", reading: "さいしょ", romaji: "saisho", meaning: "Đầu tiên, ban đầu", exJp: "「最初」にひらがなを、次にカタカナを勉強した。", exVi: "Đầu tiên học Hiragana, tiếp theo học Katakana." },
+            { id: 110, word: "最後", reading: "さいご", romaji: "saigo", meaning: "Cuối cùng, sau cùng", exJp: "あとから来た人は列の「最後」に並んでください。", exVi: "Người đến sau xin vui lòng xếp hàng ở cuối." },
+            { id: 111, word: "自動", reading: "じどう", romaji: "jidou", meaning: "Tự động", exJp: "このドアは「自動」だから、手で開けなくてもいい。", exVi: "Cửa này là tự động nên không cần mở bằng tay." },
+            { id: 112, word: "種類", reading: "しゅるい", romaji: "shurui", meaning: "Chủng loại, loại", exJp: "公園にはいろいろな「種類」の花がある。", exVi: "Trong công viên có nhiều loại hoa khác nhau." },
+            { id: 113, word: "性格", reading: "せいかく", romaji: "seikaku", meaning: "Tính cách, tính tình", exJp: "あの人は「性格」がいいので、みんなに好かれている。", exVi: "Người đó tính cách tốt nên được mọi người yêu mến." },
+            { id: 114, word: "性質", reading: "せいしつ", romaji: "seishitsu", meaning: "Tính chất, bản chất", exJp: "この布は燃えにくい「性質」を持っている。", exVi: "Loại vải này mang tính chất khó cháy." },
+            { id: 115, word: "順番", reading: "じゅんばん", romaji: "junban", meaning: "Thứ tự, lượt", exJp: "発表の「順番」を決める。", exVi: "Quyết định thứ tự phát biểu." },
+            { id: 116, word: "番", reading: "ばん", romaji: "ban", meaning: "Lượt, phiên (trông nom)", exJp: "次は私の「番」だ。", exVi: "Tiếp theo là đến lượt tôi." },
+            { id: 117, word: "方法", reading: "ほうほう", romaji: "houhou", meaning: "Phương pháp, cách thức", exJp: "いい「方法」を探す。", exVi: "Tìm kiếm một phương pháp tốt." },
+            { id: 118, word: "製品", reading: "せいひん", romaji: "seihin", meaning: "Sản phẩm, chế phẩm", exJp: "完成した「製品」を検査する。", exVi: "Kiểm tra sản phẩm đã hoàn thành." },
+            { id: 119, word: "値上がり", reading: "ねあがり", romaji: "neagari", meaning: "Tăng giá", exJp: "食品の「値上がり」。", exVi: "Sự tăng giá của thực phẩm." },
+            { id: 120, word: "生", reading: "なま", romaji: "nama", meaning: "Tươi, sống (chưa chín)", exJp: "肉を「生」で食べる。", exVi: "Ăn thịt sống." },
+            { id: 121, word: "渇く", reading: "かわく", romaji: "kawaku", meaning: "Khát (nước)", exJp: "のどが「渇いた」。", exVi: "Tôi bị khô cổ / khát nước." },
+            { id: 122, word: "嗅ぐ", reading: "かぐ", romaji: "kagu", meaning: "Ngửi", exJp: "においを「嗅ぐ」。", exVi: "Ngửi mùi hương." },
+            { id: 123, word: "叩く", reading: "たたく", romaji: "tataku", meaning: "Đập, vỗ, gõ", exJp: "ドアを「叩く」。", exVi: "Gõ cửa." },
+            { id: 124, word: "殴る", reading: "なぐる", romaji: "naguru", meaning: "Đấm, đánh", exJp: "教師が生徒を「殴っ」て、問題になっている。", exVi: "Giáo viên đấm học sinh đang trở thành sự cố vấn đề." },
+            { id: 125, word: "ける", reading: "ける", romaji: "keru", meaning: "Đá (bằng chân)", exJp: "ボールを「ける」。", exVi: "Đá quả bóng." },
+            { id: 126, word: "抱く", reading: "だく", romaji: "daku", meaning: "Ôm, ẵm", exJp: "子どもを両手でしっかりと「抱く」。", exVi: "Ôm chặt đứa trẻ bằng cả hai tay." },
+            { id: 127, word: "倒れる", reading: "たおれる", romaji: "taoreru", meaning: "Đổ, ngã, ngất", exJp: "台風で木が「倒れた」。", exVi: "Cây cối bị đổ do bão." },
+            { id: 128, word: "倒す", reading: "たおす", romaji: "taosu", meaning: "Đánh đổ, làm ngã", exJp: "花びんを「倒し」て割ってしまった。", exVi: "Lỡ làm ngã bình hoa khiến nó vỡ mất." },
+            { id: 129, word: "起きる", reading: "おきる", romaji: "okiru", meaning: "Thức dậy, xảy ra", exJp: "きょうは8時に「起き」た。", exVi: "Hôm nay tôi thức dậy lúc 8 giờ." },
+            { id: 130, word: "起こす", reading: "おこす", romaji: "okosu", meaning: "Đánh thức, dựng dậy, gây ra", exJp: "うちの子は朝「起こし」てもなかなか起きない。", exVi: "Con nhà tôi buổi sáng gọi dậy mà mãi không chịu dậy." },
+            { id: 131, word: "尋ねる", reading: "たずねる", romaji: "tazuneru", meaning: "Hỏi, truy hỏi", exJp: "交番で警官に市役所までの道を「尋ね」た。", exVi: "Hỏi cảnh sát ở đồn đường đến trụ sở thị chính." },
+            { id: 132, word: "呼ぶ", reading: "よぶ", romaji: "yobu", meaning: "Gọi, mời, thu hút", exJp: "名前を「呼ば」れたら返事をしてください。", exVi: "Khi được gọi tên xin hãy trả lời." },
+            { id: 133, word: "叫ぶ", reading: "さけぶ", romaji: "sakebu", meaning: "Hét, gào to", exJp: "大声で「叫ん」だが、相手は気づかずに行ってしまった。", exVi: "Đã gào to nhưng đối phương không nhận ra mà đi mất." },
+            { id: 134, word: "黙る", reading: "だまる", romaji: "damaru", meaning: "Im lặng, làm thinh", exJp: "先生が質問したが、だれも答えないで「だまっ」ている。", exVi: "Thầy giáo đặt câu hỏi nhưng không ai trả lời mà đều im lặng." },
+            { id: 135, word: "飼う", reading: "かう", romaji: "kau", meaning: "Nuôi (động vật)", exJp: "何かペットを「飼い」たいと思っている。", exVi: "Tôi đang muốn nuôi một loài thú cưng nào đó." },
+            { id: 136, word: "数える", reading: "かぞえる", romaji: "kazoeru", meaning: "Đếm", exJp: "数を「数える」。", exVi: "Đếm số lượng." },
+            { id: 137, word: "乾く", reading: "かわく", romaji: "kawaku", meaning: "Khô (quần áo, không khí)", exJp: "外に干した洗たく物はすぐに「乾い」た。", exVi: "Quần áo phơi ngoài trời ngay lập tức đã khô." },
+            { id: 138, word: "乾かす", reading: "かわかす", romaji: "kawakasu", meaning: "Làm khô, sấy khô", exJp: "ドライヤーでぬれた髪を「乾かし」た。", exVi: "Dùng máy sấy làm khô mái tóc ướt." },
+            { id: 139, word: "畳む", reading: "たたむ", romaji: "tatamu", meaning: "Gấp, xếp (quần áo, ô)", exJp: "洗たく物を「たたむ」。", exVi: "Gấp quần áo đã giặt." },
+            { id: 140, word: "誘う", reading: "さそう", romaji: "sasou", meaning: "Rủ rê, mời", exJp: "友だちを「誘っ」て映画を見に行った。", exVi: "Rủ rê bạn bè cùng đi xem phim." },
+            { id: 141, word: "おごる", reading: "おごる", romaji: "ogoru", meaning: "Khao, đãi (ăn uống)", exJp: "きのうは後輩に焼き肉を「おごっ」た。", exVi: "Hôm qua tôi đã khao đàn em món thịt nướng." },
+            { id: 142, word: "預かる", reading: "あずかる", romaji: "azukaru", meaning: "Trông nom, giữ hộ", exJp: "旅行に行く友だちから犬を「預かる」ことになった。", exVi: "Tôi nhận trông hộ con chó cho người bạn đi du lịch." },
+            { id: 143, word: "預ける", reading: "あずける", romaji: "azukeru", meaning: "Gửi (tiền, đồ đạc, con cái)", exJp: "銀行にお金を「預ける」と、利子がつく。", exVi: "Gửi tiền vào ngân hàng thì sẽ có lãi suất." },
+            { id: 144, word: "決まる", reading: "きまる", romaji: "kimaru", meaning: "Được quyết định, được ấn định", exJp: "帰国の日が「決まっ」た。", exVi: "Ngày về nước đã được quyết định." },
+            { id: 145, word: "決める", reading: "きめる", romaji: "kimeru", meaning: "Quyết định, ấn định", exJp: "進学か就職か、早く「決め」たほうがいいですよ。", exVi: "Nên sớm quyết định xem học tiếp hay xin việc đi nhé." },
+            { id: 146, word: "写る", reading: "うつる", romaji: "utsuru", meaning: "Chụp được, chiếu (ảnh)", exJp: "このカメラは暗いところでもよく「写る」。", exVi: "Chiếc máy ảnh này chụp tốt ngay cả ở nơi tối." },
+            { id: 147, word: "写す", reading: "うつす", romaji: "utsusu", meaning: "Chụp (ảnh), chép lại", exJp: "写真を「写す」。", exVi: "Chụp ảnh." },
+            { id: 148, word: "思い出す", reading: "おもいだす", romaji: "omoidasu", meaning: "Nhớ lại, nhớ ra", exJp: "毎年春になると、高校の入学式を「思い出し」ます。", exVi: "Mỗi khi mùa xuân đến tôi lại nhớ về lễ nhập học cấp ba." },
+            { id: 149, word: "教わる", reading: "おそわる", romaji: "osowaru", meaning: "Được dạy, học từ", exJp: "この料理の作り方は母から「教わり」ました。", exVi: "Cách làm món ăn này tôi được dạy từ mẹ." },
+            { id: 50, word: "申し込む", reading: "もうしこむ", romaji: "moushikomu", meaning: "Đăng ký, cầu hôn", exJp: "パーティーに参加を「申し込む」。", exVi: "Đăng ký tham gia bữa tiệc." }
+        ];
+
+        let currentMode = 'quiz';
+        let currentIndex = 0;
+        let score = 0;
+        let canInteract = true;
+
+        function switchMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            if(mode === 'quiz') {
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+                document.getElementById('quiz-section').style.display = 'block';
+                document.getElementById('typing-section').style.display = 'none';
+            } else {
+                document.querySelectorAll('.tab-btn')[1].classList.add('active');
+                document.getElementById('quiz-section').style.display = 'none';
+                document.getElementById('typing-section').style.display = 'block';
+            }
+            loadWord();
+        }
+
+        function loadWord() {
+            canInteract = true;
+            document.getElementById('feedback').style.display = 'none';
+            const item = vocabData[currentIndex];
+
+            document.getElementById('q-count').innerText = `Từ ${currentIndex + 101} / ${vocabData.length + 100}`;
+            document.getElementById('score-count').innerText = `Điểm: ${score}`;
+
+            if(currentMode === 'quiz') {
+                document.getElementById('q-num').innerText = `No. ${item.id}`;
+                document.getElementById('q-word').innerText = item.word;
+                document.getElementById('q-reading').innerText = item.reading;
+
+                const quizBox = document.getElementById('quiz-box');
+                quizBox.innerHTML = '';
+
+                let options = [item.meaning];
+                while(options.length < 4) {
+                    let randItem = vocabData[Math.floor(Math.random() * vocabData.length)].meaning;
+                    if(!options.includes(randItem)) options.push(randItem);
+                }
+                options.sort(() => Math.random() - 0.5);
+
+                options.forEach(opt => {
+                    const btn = document.createElement('button');
+                    btn.className = 'opt-btn';
+                    btn.innerText = opt;
+                    btn.onclick = () => checkQuiz(btn, opt === item.meaning);
+                    quizBox.appendChild(btn);
+                });
+            } else {
+                document.getElementById('t-num').innerText = `No. ${item.id}`;
+                document.getElementById('t-meaning').innerText = item.meaning;
+                document.getElementById('t-ex-jp').innerText = item.exJp;
+                document.getElementById('t-ex-vi').innerText = item.exVi;
+                document.getElementById('typing-input').value = '';
+            }
+        }
+
+        function checkQuiz(btn, isCorrect) {
+            if(!canInteract) return;
+            canInteract = false;
+
+            const statusEl = document.getElementById('result-status');
+            if(isCorrect) {
+                btn.classList.add('correct');
+                score += 10;
+                statusEl.innerHTML = `<span style="color: #4caf50;">✓ 正解 (Chính xác!)</span>`;
+            } else {
+                btn.classList.add('wrong');
+                statusEl.innerHTML = `<span style="color: #ef5350;">✕ ざんねん (Đáp án đúng: ${vocabData[currentIndex].meaning})</span>`;
+            }
+            document.getElementById('score-count').innerText = `Điểm: ${score}`;
+            document.getElementById('feedback').style.display = 'block';
+        }
+
+        function checkTyping() {
+            if(!canInteract) return;
+            canInteract = false;
+
+            const val = document.getElementById('typing-input').value.trim().toLowerCase();
+            const item = vocabData[currentIndex];
+            const statusEl = document.getElementById('result-status');
+
+            if(val === item.word.toLowerCase() || val === item.reading || val === item.romaji) {
+                score += 10;
+                statusEl.innerHTML = `<span style="color: #4caf50;">✓ 正解 (Chính xác: ${item.word} - ${item.reading})</span>`;
+            } else {
+                statusEl.innerHTML = `<span style="color: #ef5350;">✕ ざんねん (Đáp án đúng: ${item.word} / ${item.reading})</span>`;
+            }
+            document.getElementById('score-count').innerText = `Điểm: ${score}`;
+            document.getElementById('feedback').style.display = 'block';
+        }
+
+        function nextWord() {
+            currentIndex = (currentIndex + 1) % vocabData.length;
+            loadWord();
+        }
+
+        loadWord();
+    </script>
+</body>
+</html>
